@@ -1,0 +1,9 @@
+.\objects\hal_pll.o: inc\HAL_PLL.c
+.\objects\hal_pll.o: inc\TM4C123GH6PM.h
+.\objects\hal_pll.o: inc\core_cm4.h
+.\objects\hal_pll.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\hal_pll.o: inc\cmsis/core_cmInstr.h
+.\objects\hal_pll.o: inc\cmsis/cmsis_armcc.h
+.\objects\hal_pll.o: inc\cmsis/core_cmFunc.h
+.\objects\hal_pll.o: inc\cmsis/core_cmSimd.h
+.\objects\hal_pll.o: inc\system_TM4C.h
