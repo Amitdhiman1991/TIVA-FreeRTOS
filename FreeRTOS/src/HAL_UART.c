@@ -32,7 +32,7 @@
 	 void UART_Init(UART_Id_t Module, PortName_t port , uint32_t baud)
 	 {
 		  uint32_t Baud_uartdivisor;
-			double frac,integer;
+			float frac,integer;
 		 //Setting Specific UART Bit in RCGCUART register
 		 
 		 SYSCTL->RCGCUART |= (0x1 << Module);
@@ -43,7 +43,7 @@
 					 if(port == PORTA )
 						 {
 						 GPIO_InitPort(PORTA);
-						 GPIO_EnableAltDigital(PORTA,PIN0|PIN1 ,0x01,true);
+						 GPIO_EnableAltDigital(PORTA,PIN0|PIN1 ,0x01,FALSE);
 						 }
 						  
 						 break;
@@ -104,10 +104,40 @@
 			
 	   Baud_uartdivisor = (16 * baud);
 		 
-		 frac =  modf ((SystemCoreClock  /Baud_uartdivisor),&integer );
-		 uart_t ->IBRD = integer ;
-		 uart_t ->FBRD = (frac * 64 + 0.5);
+		uint32_t divisor = (SystemCoreClock /Baud_uartdivisor) ;
+		 
+		  
+		 uart_t ->IBRD = divisor ;
+		 uart_t ->FBRD = (((SystemCoreClock % Baud_uartdivisor) * 64) / Baud_uartdivisor) + 0.5;
+		 
+		 uart_t->LCRH  = 0x00000060;                           //setting 8 bit 
+		 
+		 uart_t->CC = 0; 		 																		//using system clock
+	 
+	   uart_t->CTL = 0x00000301;                              // Enabling uart setting rx and tx  
+	 }
+	 
+	 
+	 void UART_CharWrite(UART_Id_t Module , char a )
+	 {
+	 
+	 volatile UART0_Type * uart_t  =  (volatile UART0_Type *)UART_BaseAddress[Module];
+	 
+	 while(uart_t->FR & 0x20){}
+		 
+		 uart_t->DR = a ;
+	 
 	 
 	 }
+	 
+	 
+	 void UART_StringWrite(UART_Id_t Module ,char * s)
+	 {
 		 
-		 
+	  while (*s != '\0' )
+		{
+		UART_CharWrite(Module , *s);
+			s++;
+		}
+	 
+	}		 

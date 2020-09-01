@@ -154,10 +154,13 @@ void GPIO_EnableAltDigital(PortName_t port, uint8_t pinMap, uint8_t ctl, bool op
   uint8_t i=0;
   uint32_t PCTLValue = 0;
   
-  GPIO_InitPort(port);
+  //GPIO_InitPort(port);
   volatile GPIOA_Type* gpio = (volatile GPIOA_Type*)GPIOBaseAddress[port]; 
   
-  
+  // Enable pins for digital and disable for analog.
+	 gpio->DEN |= pinMap;
+	gpio->AMSEL &= ~pinMap;
+		
   // Enable pins for alternate function.
   gpio->AFSEL |= pinMap;
   
@@ -172,7 +175,7 @@ void GPIO_EnableAltDigital(PortName_t port, uint8_t pinMap, uint8_t ctl, bool op
   
   for (i=0; i<7; i++)
   {
-  if(pinMap & 0x01 <<i)
+  if(pinMap & (0x01 <<i))
     {
      PCTLValue |= (ctl<<(4*i));
     }

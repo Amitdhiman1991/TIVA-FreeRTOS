@@ -22,6 +22,7 @@ typedef enum
 }	UART_Id_t; 
 
 void UART_Init(UART_Id_t Module, PortName_t port ,uint32_t baud );
-
+void UART_CharWrite(UART_Id_t Module , char a );
+void UART_StringWrite(UART_Id_t Module ,char * s);
 
 #endif

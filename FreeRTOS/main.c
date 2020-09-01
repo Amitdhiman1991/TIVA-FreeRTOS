@@ -40,29 +40,30 @@ void vBlinky1 (void *pvParameters)
 }
 int main()
 {
-  SystemCoreClock = 16000000;
+   SystemCoreClock = 12000000;
 	prvSetupHardware();
 	
    
 	//1. Create a Task Blinky To Turn On LED .
-  xTaskCreate(vBlinky ,"Blinky!!" , configMINIMAL_STACK_SIZE,NULL,1,NULL);
+  //xTaskCreate(vBlinky ,"Blinky!!" , configMINIMAL_STACK_SIZE,NULL,1,NULL);
 
 	//2. Create a Task Blinky To Tunr Off LED .
-	xTaskCreate(vBlinky1 ,"Blinky!!" , configMINIMAL_STACK_SIZE,NULL,1,NULL);
+//	xTaskCreate(vBlinky1 ,"Blinky!!" , configMINIMAL_STACK_SIZE,NULL,1,NULL);
 
 	//2. After creating tunr on the scheduler
-	vTaskStartScheduler();
-	
+	//vTaskStartScheduler();
+	   UART_CharWrite(UART0_t , 'H' );
+	//UART_StringWrite (UART0_t ,"Hello");
+ 
 
-
-	for(;;);
+	//for(;;);
 	
 }
 
 void prvSetupHardware(void)
 {
-	GPIO_InitPort(PORTF);
-	GPIO_EnableDO(PORTF,PIN1,DRIVE_2MA,PULL_DOWN);
+	//GPIO_InitPort(PORTF);
+	//GPIO_EnableDO(PORTF,PIN1,DRIVE_2MA,PULL_DOWN);
  	UART_Init (UART0_t,PORTA,115200);
 }
 
